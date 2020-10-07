@@ -18,7 +18,10 @@ Create the `showPage` function
 This function will create and insert/append the elements needed to display a "page" of nine students
 */
 
-
+function showPage(list, page) {
+   // get the ul element from the html
+   // decide whether to pass through only 9 student at a time or just only display 9 students at a time 
+}
 
 /*
 Create the `addPagination` function
