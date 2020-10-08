@@ -13,13 +13,6 @@ For assistance:
 
 const itemsPerPage = 9;
 
-function showStudents(arr) {
-   const studentList = document.querySelector('ul.student-list');
-   studentList.innerHTML = '';
-   
-}
-showStudents(data);
-
 /*
 Create the `showPage` function
 This function will create and insert/append the elements needed to display a "page" of nine students
@@ -30,9 +23,10 @@ function showPage(list, page) {
   studentList.innerHTML = '';
   let startIndex = (page * itemsPerPage) - itemsPerPage;
   let endIndex = page * itemsPerPage;
+  let studentItem = '';
   for (i=0;i<list.length;i++) {
      if (i >= startIndex && i < endIndex) {
-        studentList.innerHTML += `<li class="student-item cf">
+        studentItem = `<li class="student-item cf">
             <div class="student-details">
                <img class="avatar" src="${list[i].picture.large}" alt="Profile Picture">
                <h3>${list[i].name.first} ${list[i].name.last}</h3>
@@ -42,15 +36,38 @@ function showPage(list, page) {
                <span class="date">Joined ${list[i].registered.date}</span>
             </div>
          </li>`
+         studentList.insertAdjacentHTML('beforeend', studentItem);
      }
    }
 }
+
 
 /*
 Create the `addPagination` function
 This function will create and insert/append the elements needed for the pagination buttons
 */
+function addPagination(list) {
+   let numOfPages = Math.ceil(list.length / itemsPerPage);
+   const linkList = document.querySelector('.link-list');
+   let pageButton = '';
+   for (i=1; i < numOfPages; i++) {
+      if (i == 1) {
+         pageButton = `<li>
+            <button type="button" class="active">${i}</button>
+         </li>`
+      } else {
+         pageButton = `<li>
+            <button type="button">${i}</button>
+         </li>`
+      }
+      
+      linkList.insertAdjacentHTML('beforeend', pageButton);
+   }
+}
 
 
 
 // Call functions
+
+showPage(data,1);
+addPagination(data);
