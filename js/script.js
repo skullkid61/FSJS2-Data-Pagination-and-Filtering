@@ -1,22 +1,18 @@
-/*
-Treehouse Techdegree:
-FSJS Project 2 - Data Pagination and Filtering
-*/
-
-
-
-/*
-For assistance:
-   Check out the "Project Resources" section of the Instructions tab: https://teamtreehouse.com/projects/data-pagination-and-filtering#instructions
-   Reach out in your Slack community: https://treehouse-fsjs-102.slack.com/app_redirect?channel=unit-2
-*/
 
 const itemsPerPage = 9;
+const linkList = document.querySelector('.link-list');
 
-/*
-Create the `showPage` function
-This function will create and insert/append the elements needed to display a "page" of nine students
-*/
+// Appending search bar to index.htnml
+
+const header = document.querySelector('header');
+const searchBarHTML = `<label for="search" class="student-search">
+         <input id="search" placeholder="Search by name...">
+         <button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
+      </label>`
+header.insertAdjacentHTML('beforeend', searchBarHTML);
+
+
+// showPage function to take the array of objects and also the page number
 
 function showPage(list, page) {
   const studentList = document.querySelector('ul.student-list');
@@ -41,33 +37,32 @@ function showPage(list, page) {
    }
 }
 
-
-/*
-Create the `addPagination` function
-This function will create and insert/append the elements needed for the pagination buttons
-*/
+// addPaginaction to add the buttons at the bottom of the screen
 function addPagination(list) {
    let numOfPages = Math.ceil(list.length / itemsPerPage);
-   const linkList = document.querySelector('.link-list');
    let pageButton = '';
-   for (i=1; i < numOfPages; i++) {
-      if (i == 1) {
-         pageButton = `<li>
-            <button type="button" class="active">${i}</button>
-         </li>`
-      } else {
-         pageButton = `<li>
-            <button type="button">${i}</button>
-         </li>`
-      }
-      
+   for (i=1; i <= numOfPages; i++) {
+      pageButton = `<li>
+         <button type="button">${i}</button>
+      </li>`
       linkList.insertAdjacentHTML('beforeend', pageButton);
    }
+   const firstButton = document.querySelector('button:first-child');
+   firstButton.classList.add('active');
 }
 
-
-
-// Call functions
+// functions for page load
 
 showPage(data,1);
 addPagination(data);
+
+// page select event listener
+
+linkList.addEventListener('click', (e) => {
+   if (e.target.tagName === 'BUTTON') {
+      document.querySelector('button.active').classList.remove('active');
+      e.target.classList.add('active');
+      let pageNo = e.target.innerHTML;
+      showPage(data,pageNo);
+   }
+});
