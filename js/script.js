@@ -1,7 +1,7 @@
 
 const itemsPerPage = 9;
 const linkList = document.querySelector('.link-list');
-
+const studentList = document.querySelector('ul.student-list');
 // Appending search bar to index.htnml
 
 const header = document.querySelector('header');
@@ -11,11 +11,9 @@ const searchBarHTML = `<label for="search" class="student-search">
       </label>`
 header.insertAdjacentHTML('beforeend', searchBarHTML);
 
-
 // showPage function to take the array of objects and also the page number
 
 function showPage(list, page) {
-  const studentList = document.querySelector('ul.student-list');
   studentList.innerHTML = '';
   let startIndex = (page * itemsPerPage) - itemsPerPage;
   let endIndex = page * itemsPerPage;
@@ -39,6 +37,7 @@ function showPage(list, page) {
 
 // addPaginaction to add the buttons at the bottom of the screen
 function addPagination(list) {
+   linkList.innerHTML = '';
    let numOfPages = Math.ceil(list.length / itemsPerPage);
    let pageButton = '';
    for (i=1; i <= numOfPages; i++) {
@@ -48,7 +47,9 @@ function addPagination(list) {
       linkList.insertAdjacentHTML('beforeend', pageButton);
    }
    const firstButton = document.querySelector('button:first-child');
-   firstButton.classList.add('active');
+   if (firstButton) {
+      firstButton.classList.add('active');
+   }
 }
 
 // functions for page load
@@ -66,3 +67,34 @@ linkList.addEventListener('click', (e) => {
       showPage(data,pageNo);
    }
 });
+
+// use search value to return only the results of the data set that matches the criteria
+
+const search = document.querySelector('#search')
+
+// create a function that takes items from first array and then shifts them into the second array based on search criteria
+
+let results = [];
+function newResults(list, input) {
+	results = [];
+   input = input.toLowerCase();
+	for (i=0; i < list.length; i++){
+      const userData = `${list[i].name.first} ${list[i].name.last} ${list[i].email}`
+		if (userData.toLowerCase().indexOf(input) > -1) {
+			results.push(list[i]);
+		}
+	}
+   return results;
+}
+
+// Search event listener
+
+search.addEventListener('keyup', () => {
+	input = search.value;
+	newResults(data, input);
+	showPage(results,1);
+   addPagination(results);
+   if (studentList.innerHTML == '') {
+      studentList.innerHTML = `<p>No results found</p>`;
+   }
+})
