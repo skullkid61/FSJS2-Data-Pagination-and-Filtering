@@ -2,11 +2,12 @@
 const itemsPerPage = 9;
 const linkList = document.querySelector('.link-list');
 const studentList = document.querySelector('ul.student-list');
+
 // Appending search bar to index.htnml
 
 const header = document.querySelector('header');
 const searchBarHTML = `<label for="search" class="student-search">
-         <input id="search" placeholder="Search by name...">
+         <input id="search" placeholder="Search by name..." value="">
          <button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
       </label>`
 header.insertAdjacentHTML('beforeend', searchBarHTML);
@@ -36,6 +37,7 @@ function showPage(list, page) {
 }
 
 // addPaginaction to add the buttons at the bottom of the screen
+
 function addPagination(list) {
    linkList.innerHTML = '';
    let numOfPages = Math.ceil(list.length / itemsPerPage);
@@ -64,16 +66,17 @@ linkList.addEventListener('click', (e) => {
       document.querySelector('button.active').classList.remove('active');
       e.target.classList.add('active');
       let pageNo = e.target.innerHTML;
-      showPage(data,pageNo);
+      if (search.value === '') {
+         showPage(data, pageNo);
+      } else {
+         showPage(results, pageNo);
+      }
    }
 });
 
-// use search value to return only the results of the data set that matches the criteria
-
-const search = document.querySelector('#search')
-
 // create a function that takes items from first array and then shifts them into the second array based on search criteria
 
+const search = document.querySelector('#search')
 let results = [];
 function newResults(list, input) {
 	results = [];
@@ -87,7 +90,7 @@ function newResults(list, input) {
    return results;
 }
 
-// Search event listener
+// Search event listener 
 
 search.addEventListener('keyup', () => {
 	input = search.value;
