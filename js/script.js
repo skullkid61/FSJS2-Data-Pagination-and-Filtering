@@ -12,7 +12,8 @@ const searchBarHTML = `<label for="search" class="student-search">
       </label>`
 header.insertAdjacentHTML('beforeend', searchBarHTML);
 
-// showPage function to take the array of objects and also the page number
+// showPage function takes an array of objects and also the page number
+// this will append all results of the array to the page
 
 function showPage(list, page) {
   studentList.innerHTML = '';
@@ -54,7 +55,7 @@ function addPagination(list) {
    }
 }
 
-// functions for page load
+// page load functions
 
 showPage(data,1);
 addPagination(data);
@@ -66,6 +67,8 @@ linkList.addEventListener('click', (e) => {
       document.querySelector('button.active').classList.remove('active');
       e.target.classList.add('active');
       let pageNo = e.target.innerHTML;
+      // if nothing appears in the search bar, display all the data
+      // if there is something displaying in the search results, display resuslts
       if (search.value === '') {
          showPage(data, pageNo);
       } else {
@@ -74,7 +77,7 @@ linkList.addEventListener('click', (e) => {
    }
 });
 
-// create a function that takes items from first array and then shifts them into the second array based on search criteria
+// function that takes items from first array and then shifts them into a results array based on search criteria
 
 const search = document.querySelector('#search')
 let results = [];
@@ -83,6 +86,8 @@ function newResults(list, input) {
    input = input.toLowerCase();
 	for (i=0; i < list.length; i++){
       const userData = `${list[i].name.first} ${list[i].name.last} ${list[i].email}`
+      // if index of the search text is greater than -1 of the userData, 
+      // it would count as a match and add the results to the new array
 		if (userData.toLowerCase().indexOf(input) > -1) {
 			results.push(list[i]);
 		}
@@ -90,7 +95,7 @@ function newResults(list, input) {
    return results;
 }
 
-// Search event listener 
+// Search event listener to use all previous functions on each keyup
 
 search.addEventListener('keyup', () => {
 	input = search.value;
