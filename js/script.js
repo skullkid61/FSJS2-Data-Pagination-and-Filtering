@@ -1,5 +1,5 @@
 
-let itemsPerPage = document.querySelector('#itemsPerPage option').value;
+let itemsPerPage = document.querySelector('#itemsPerPage option[selected]').value;
 const linkList = document.querySelector('.link-list');
 const studentList = document.querySelector('ul.student-list');
 
@@ -112,6 +112,6 @@ search.addEventListener('keyup', () => {
 const itemsDropDown = document.querySelector("#itemsPerPage");
 
 itemsDropDown.addEventListener('change', (e) => {
-    itemsPerPage = e.target.value;
+   itemsPerPage = e.target.value;
     loadList(data, search);
 });
