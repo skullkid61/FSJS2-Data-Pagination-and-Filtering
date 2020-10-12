@@ -77,6 +77,15 @@ header h2 {
   width: 25px;
 }
 
+.items-per-page {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1em;
+}
+
+.items-per-page label {
+    padding: 0 1em;
+}
 
 
 .student-list {

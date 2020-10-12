@@ -1,5 +1,5 @@
 
-const itemsPerPage = 9;
+let itemsPerPage = document.querySelector('#itemsPerPage option').value;
 const linkList = document.querySelector('.link-list');
 const studentList = document.querySelector('ul.student-list');
 
@@ -101,8 +101,20 @@ search.addEventListener('keyup', () => {
 	input = search.value;
 	newResults(data, input);
 	showPage(results,1);
-   addPagination(results);
-   if (studentList.innerHTML == '') {
-      studentList.innerHTML = `<p>No results found</p>`;
-   }
+    addPagination(results);
+    if (studentList.innerHTML == '') {
+        studentList.innerHTML = `<p class="no-results">No results found</p>`;
+    }
+})
+
+// Event listener to select items per page
+
+const itemsDropDown = document.querySelector("#itemsPerPage");
+
+itemsDropDown.addEventListener('change', (e) => {
+    itemsPerPage = e.target.value;
+    input = search.value;
+    newResults(data, input);
+    showPage(results,1);
+    addPagination(results);
 })
