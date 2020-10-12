@@ -11,6 +11,7 @@ const searchBarHTML = `<label for="search" class="student-search">
          <button type="button"><img src="img/icn-search.svg" alt="Search icon"></button>
       </label>`
 header.insertAdjacentHTML('beforeend', searchBarHTML);
+const search = document.querySelector('#search');
 
 // showPage function takes an array of objects and also the page number
 // this will append all results of the array to the page
@@ -37,6 +38,22 @@ function showPage(list, page) {
    }
 }
 
+// a function that takes items from first array and then shifts them into a results array based on search criteria
+
+function newResults(list, input) {
+	let results = [];
+   input = input.value.toLowerCase();
+	for (i=0; i < list.length; i++){
+      const userData = `${list[i].name.first} ${list[i].name.last} ${list[i].email}`
+      // if index of the search text is greater than -1 of the userData, 
+      // it would count as a match and add the results to the new array
+		if (userData.toLowerCase().indexOf(input) > -1) {
+			results.push(list[i]);
+		}
+	}
+   return results;
+}
+
 // addPaginaction to add the buttons at the bottom of the screen
 
 function addPagination(list) {
@@ -57,8 +74,12 @@ function addPagination(list) {
 
 // page load functions
 
-showPage(data,1);
-addPagination(data);
+function loadList(list, input) {
+   showPage(newResults(list, input),1);
+   addPagination(newResults(list, input));
+}
+
+loadList(data, search);
 
 // page select event listener
 
@@ -77,35 +98,14 @@ linkList.addEventListener('click', (e) => {
    }
 });
 
-// function that takes items from first array and then shifts them into a results array based on search criteria
-
-const search = document.querySelector('#search')
-let results = [];
-function newResults(list, input) {
-	results = [];
-   input = input.toLowerCase();
-	for (i=0; i < list.length; i++){
-      const userData = `${list[i].name.first} ${list[i].name.last} ${list[i].email}`
-      // if index of the search text is greater than -1 of the userData, 
-      // it would count as a match and add the results to the new array
-		if (userData.toLowerCase().indexOf(input) > -1) {
-			results.push(list[i]);
-		}
-	}
-   return results;
-}
-
 // Search event listener to use all previous functions on each keyup
 
 search.addEventListener('keyup', () => {
-	input = search.value;
-	newResults(data, input);
-	showPage(results,1);
-    addPagination(results);
-    if (studentList.innerHTML == '') {
-        studentList.innerHTML = `<p class="no-results">No results found</p>`;
-    }
-})
+	loadList(data, search);
+   if (studentList.innerHTML == '') {
+      studentList.innerHTML = `<p class="no-results">No results found</p>`;
+   }
+});
 
 // Event listener to select items per page
 
@@ -113,8 +113,5 @@ const itemsDropDown = document.querySelector("#itemsPerPage");
 
 itemsDropDown.addEventListener('change', (e) => {
     itemsPerPage = e.target.value;
-    input = search.value;
-    newResults(data, input);
-    showPage(results,1);
-    addPagination(results);
-})
+    loadList(data, search);
+});
