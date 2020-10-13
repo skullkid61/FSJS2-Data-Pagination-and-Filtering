@@ -87,13 +87,7 @@ linkList.addEventListener('click', (e) => {
 		document.querySelector('button.active').classList.remove('active');
 		e.target.classList.add('active');
 		let pageNo = e.target.innerHTML;
-		// if nothing appears in the search bar, display all the data
-		// if there is something displaying in the search results, display resuslts
-		if (search.value === '') {
-			showPage(data, pageNo);
-		} else {
-			showPage(results, pageNo);
-		}
+		showPage(newResults(data, search), pageNo);
 	}
 });
 
